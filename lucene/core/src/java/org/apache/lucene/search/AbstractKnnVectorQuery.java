@@ -95,7 +95,7 @@ abstract class AbstractKnnVectorQuery extends Query {
     return createRewrittenQuery(reader, topK);
   }
 
-  private TopDocs searchLeaf(LeafReaderContext ctx, Weight filterWeight) throws IOException {
+  protected TopDocs searchLeaf(LeafReaderContext ctx, Weight filterWeight) throws IOException {
     TopDocs results = getLeafResults(ctx, filterWeight);
     if (ctx.docBase > 0) {
       for (ScoreDoc scoreDoc : results.scoreDocs) {
@@ -105,7 +105,7 @@ abstract class AbstractKnnVectorQuery extends Query {
     return results;
   }
 
-  private TopDocs getLeafResults(LeafReaderContext ctx, Weight filterWeight) throws IOException {
+  protected TopDocs getLeafResults(LeafReaderContext ctx, Weight filterWeight) throws IOException {
     Bits liveDocs = ctx.reader().getLiveDocs();
     int maxDoc = ctx.reader().maxDoc();
 
@@ -137,7 +137,7 @@ abstract class AbstractKnnVectorQuery extends Query {
     }
   }
 
-  private BitSet createBitSet(DocIdSetIterator iterator, Bits liveDocs, int maxDoc)
+  protected BitSet createBitSet(DocIdSetIterator iterator, Bits liveDocs, int maxDoc)
       throws IOException {
     if (liveDocs == null && iterator instanceof BitSetIterator) {
       // If we already have a BitSet and no deletions, reuse the BitSet
